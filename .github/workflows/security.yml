@@ -1,0 +1,35 @@
+name: Security Scan
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  push:
+    branches: [main]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Dependency vulnerability scan
+        run: npm audit --audit-level=high || true
+
+      - name: Check for secrets in code
+        run: |
+          if grep -r "JWT_SECRET\s*=\s*['\"][^$]" src/ --include="*.ts" --include="*.tsx"; then
+            echo "WARNING: Hardcoded secret detected!"
+            exit 1
+          fi
+          echo "No hardcoded secrets found"
