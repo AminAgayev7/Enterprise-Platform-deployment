@@ -25,8 +25,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
             },
         });
 
-        if (!order) return NextResponse.json({ error: "Order not found." }, { status: 404 });
-
+        if (!order) {
+            return NextResponse.json({ error: "Order not found." }, { status: 404 });
+        }
         if (currentUser.role !== "ADMIN" && order.userId !== currentUser.id) {
             return NextResponse.json({ error: "Not authorized." }, { status: 403 });
         }
