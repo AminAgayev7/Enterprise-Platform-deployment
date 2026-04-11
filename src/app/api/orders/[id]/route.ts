@@ -7,7 +7,7 @@ const updateOrderSchema = z.object({
     status: z.enum(["PENDING", "PAID", "SHIPPED", "CANCELLED"]),
 });
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const currentUser = await getUserFromToken();
         if (!currentUser) {
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const currentUser = await getUserFromToken();
         if (!currentUser || currentUser.role !== "ADMIN") {
@@ -68,7 +68,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const currentUser = await getUserFromToken();
         if (!currentUser || currentUser.role !== "ADMIN") {

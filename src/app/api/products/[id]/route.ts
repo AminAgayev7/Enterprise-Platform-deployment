@@ -9,7 +9,7 @@ const updateProductSchema = z.object({
     stock: z.number().int().min(0, "Stock can't be negative").optional(),
 });
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id: rawId } = await params;
         const id = parseInt(rawId, 10);
@@ -32,7 +32,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id: rawId } = await params;
         const id = parseInt(rawId, 10);
@@ -67,7 +67,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     
     try {
         const { id: rawId } = await params;
