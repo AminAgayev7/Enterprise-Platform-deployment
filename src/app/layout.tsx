@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
 import Script from "next/script";
+import { WebVitals } from "./web-vitals";
+
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -28,6 +30,7 @@ export default function RootLayout({
         <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
             <body className="min-h-full flex flex-col">
                 <AuthProvider>
+                    <WebVitals />
                     <Navbar />
                     {children}
                 </AuthProvider>
