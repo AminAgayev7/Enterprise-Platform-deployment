@@ -5,6 +5,8 @@ import Navbar from "@/components/ui/Navbar";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
 import Script from "next/script";
 import { WebVitals } from "./web-vitals";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -39,6 +41,8 @@ export default function RootLayout({
                     crossOrigin="anonymous"
                     strategy="lazyOnload"
                 />
+                <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     );
