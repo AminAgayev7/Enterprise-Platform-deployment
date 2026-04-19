@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -24,12 +26,10 @@ jobs:
         run: npm install
 
       - name: Dependency vulnerability scan
-        run: npm audit --audit-level=high || true
+        run: npm audit --audit-level=high
 
-      - name: Check for secrets in code
-        run: |
-          if grep -r "JWT_SECRET\s*=\s*['\"][^$]" src/ --include="*.ts" --include="*.tsx"; then
-            echo "WARNING: Hardcoded secret detected!"
-            exit 1
-          fi
-          echo "No hardcoded secrets found"
+      - name: Secret scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
